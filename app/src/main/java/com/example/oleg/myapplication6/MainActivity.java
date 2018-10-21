@@ -14,10 +14,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import static com.example.oleg.myapplication6.DBHelper.TABLE_STUD;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    Button btnAdd, btnRead, btnClear;
-    EditText etSurname, etGroup,etFac;
+    Button btnAdd, btnRead, btnClear,btnSort,btnFind;
+    EditText etSurname, etGroup,etFac,etFind;
 
     DBHelper dbHelper;
 
@@ -34,9 +36,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnClear = (Button) findViewById(R.id.btnClear);
         btnClear.setOnClickListener(this);
 
+        btnSort=findViewById(R.id.btnSort);
+        btnSort.setOnClickListener(this);
+
+        btnFind=findViewById(R.id.btnFind);
+        btnFind.setOnClickListener(this);
+
         etSurname = (EditText) findViewById(R.id.etSurname);
         etGroup = (EditText) findViewById(R.id.etGroup);
         etFac=findViewById(R.id.etFac);
+        etFind=findViewById(R.id.etFind);
 
         dbHelper = new DBHelper(this);
     }
@@ -47,12 +56,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String surname = etSurname.getText().toString();
         String group = etGroup.getText().toString();
         String fac = etGroup.getText().toString();
+        String find=etFind.getText().toString();
+
 
 
 
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
+        Cursor c=null;
 
 
         switch (v.getId()) {
@@ -62,11 +74,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 contentValues.put(DBHelper.KEY_GROUP, group);
                 contentValues.put(DBHelper.KEY_FACULTY, fac);
 
-                database.insert(DBHelper.TABLE_STUD, null, contentValues);
+                database.insert(TABLE_STUD, null, contentValues);
                 break;
 
             case R.id.btnRead:
-                Cursor cursor = database.query(DBHelper.TABLE_STUD, null, null, null, null, null, null);
+                Cursor cursor = database.query(TABLE_STUD, null, null, null, null, null, null);
 
                 if (cursor.moveToFirst()) {
                     int idIndex = cursor.getColumnIndex(DBHelper.KEY_ID);
@@ -102,9 +114,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btnClear:
-                database.delete(DBHelper.TABLE_STUD, null, null);
+                database.delete(TABLE_STUD, null, null);
+                break;
+            case R.id.btnSort:
+                c=database.query(TABLE_STUD,null,null,null,null,null,"surname" );
+                break;
+            case R.id.btnFind:
+                String [] selectionArgs=new String[]{find};
+                c=database.query(TABLE_STUD,null,"faculty=?",selectionArgs,null,null,null );
                 break;
         }
+        if (c != null) {
+            if (c.moveToFirst()) {
+                String str;
+                do {
+                    str = "";
+                    for (String cn : c.getColumnNames()) {
+                        str = str.concat(cn + " = "
+                                + c.getString(c.getColumnIndex(cn)) + "; ");
+                    }
+                    Log.d("mLog", str);
+
+                } while (c.moveToNext());
+            }
+            c.close();
+        } else
+            Log.d("mLog", "Cursor is null");
         dbHelper.close();
     }
 }
