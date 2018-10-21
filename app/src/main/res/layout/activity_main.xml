@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/etSurname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/surname"
+        android:inputType="text"></EditText>
+
+    <EditText
+        android:id="@+id/etGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/group"
+        android:inputType="number"></EditText>
+
+    <EditText
+        android:id="@+id/etFac"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/faculty"
+        android:inputType="text"></EditText>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="129dp"
+            android:layout_height="wrap_content"
+            android:text="@string/add"></Button>
+
+        <Button
+            android:id="@+id/btnRead"
+            android:layout_width="143dp"
+            android:layout_height="wrap_content"
+            android:text="@string/read"></Button>
+
+        <Button
+            android:id="@+id/btnClear"
+            android:layout_width="112dp"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:text="@string/clear"></Button>
+    </LinearLayout>
+</LinearLayout>
